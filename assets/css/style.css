@@ -1,0 +1,13 @@
+button:hover {
+	background-color: lightgrey;
+}
+
+
+#answers button {
+	
+	line-height: 40px;
+}
+
+#answers h3:hover{
+	background-color: lightblue;
+}
