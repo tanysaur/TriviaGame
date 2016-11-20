@@ -14,25 +14,37 @@
 	<div class="container">
 		<div class="jumbotron">
 			<h1 class="text-center">Doctor Who Trivia</h1>
-			<div id="wins"><h4>Correct: </h4></div>
-			<div id="losses"><h4>Incorrect: </h4></div>
-			<div class="text-center" id="timer"><p>00:00</p></div>
-			
 		</div>
 	</div>
 
 	<div class="container text-center" id="conatinerStart">
-		<button id="startButton" onclick="style.display ='none'"><h1>Start</h1></button>
+		<button id="startButton"><h1>Start</h1></button>
+	</div>
+
+	<div class="container status-holder">
+		<div id="wins"><h4>Correct: </h4></div>
+		<div id="losses"><h4>Incorrect: </h4></div>
 	</div>
 
 	<div class="container" id="QA-holder">
-<!-- 			container for question -->
-		<div id="question"></div>
-		<div class="choices">
-			
-		</div>
+		<div class="text-center" id="timer">00:00</div>
 	
-	<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+		<!-- container for question -->
+		<div id="question-holder"></div>
+		
+		<!-- q0 - q9 -->
+			<!-- c00 - c93 -->
+		<!-- container for multiple choices -->
+
+		<input type="button" id="submitBtn" value="Submit">
+	</div>
+
+	<br>
+	<br>
+	
+
+	<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous">
+	</script>
     <script type="text/javascript" src="assets/javascript/app.js"></script>
 </body>
 </html>

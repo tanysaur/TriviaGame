@@ -2,6 +2,11 @@ button:hover {
 	background-color: lightgrey;
 }
 
+.row {
+	border: 1px solid blue;
+}
+
+
 
 #answers button {
 	
@@ -10,4 +15,9 @@ button:hover {
 
 #answers h3:hover{
 	background-color: lightblue;
+}
+
+
+.displayHide{
+	display: none;
 }

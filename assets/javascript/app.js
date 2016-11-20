@@ -6,13 +6,13 @@
 // Don't let the player pick more than one answer per question.
 
 // Don't forget to include a countdown timer.
-$(document).ready(function() {
+//$(document).ready(function() {
 
 //Variable declaration
 	var wins = 0;
 	var losses = 0;
 	var q = 0;
-	var userChoice = null;
+	var correctAnswer;
 
 	var trivia = [
 		{
@@ -78,7 +78,7 @@ $(document).ready(function() {
 	];
 
 	var stopwatch = {
-	    time: 5,
+	    time: 30,
 	    start: function(){
 	        counter = setInterval(stopwatch.count, 1000);
 	    },
@@ -107,85 +107,162 @@ $(document).ready(function() {
 
 	        }else{
 	        	losses++;
-	        	var next = confirm("Next question?");
-	        	if (next){
-	        		//display next Q
-	        		game.nextQ;	
-	        	}
+	        	stopwatch.stop;
+	        	alert("timesup");
+	        	$("#timer").text("00:00");
+	        	//show stats
 	        }  
 	        
 	    }
 	};
 
-	console.log("this is the answer: " + trivia[q].answer);
-	console.log("length: "+ trivia[q].options.length);
 
-
-	// window.onload = function(){
-	//     $("#startButton").on("click", stopwatch.start);
-	//     //game.nextQ;
+	window.onload = function(){
 	    
-	// };
+    $("#startButton").on("click", stopwatch.start);
+	    //game.nextQ;
+	    // $("#QA-holder").addClass("displayHide");
+	    // $("#status-holder").addClass("displayHide");
+	    
+	};
 
 	$('#startButton').click(function(){
-	  $('#quiz').slideUp();
 	  $(this).hide();
-	  $(".btn-primary").css("cssText", "display: block !important; margin:auto; width: 30%;");
 	});
 
 
-	nextQ();
-
-	function nextQ() {
-		//increment question in the trivia object
-
- 		stopwatch.start;
- 		$('#timer').text('00:05');
-
- 		//dynamically change the question
- 		$("#question").html("<h1>"+trivia[q].question+ "</h1>");
-
- 		//add buttons from trivia object
- 		var answerDiv = $('<div class="answers text-center">');
- 		$("#question").after(answerDiv);
-		for(i = 0; i < trivia[q].options.length; i++){
-			$(".choices").append("<input type='radio' name='choice'" + "value='"+ i + "'>" + trivia[q].options[i] + "\n");
-		}
-		
-	}
-
+	//nextQ();
 	
-	//when user clicks on a button, 
-	$(radio).on("click", function(){
-		var myClick = $(this).text();
-		console.log(myClick);
-		userChoice = myClick;
-		checkAnswer();
+	//add question on page
+	$.each(trivia, function(i, val) {
+		var qForm = ("<form id='question" + i + "'>" + val.question + "<br>");
+ 		$("#question-holder").append(qForm);
+
+
+ 		$.each(trivia[i].options, function(j, val2){
+ 			//add an radio input to each option
+ 			if(val.answer != val2 ){
+ 				var inputOptions = ("<input type='radio' value='incorrect' id='c"+i+j+"'>"+ val2 + "<br>");
+ 				$("#question"+i).append(inputOptions);
+ 			}
+ 			//add id correct of the radio input that has the correct answer
+ 			else{
+ 				var inputCorrectAnswer = ("<input type='radio' value='correct' id='correctOption'>"+ val2 + "<br>");
+ 				$("#question"+i).append(inputCorrectAnswer);
+ 				correctAnswer = $("#correctOption").val();
+ 			}
+ 		});
+ 	 	
 	});
+	
+	console.log(correctAnswer);
+	$("#submitBtn").on("click", checkButtons);
 
-	//check if user choice is correct
-	function checkAnswer(){
-
-		if(userChoice === trivia[q].answer){
-			console.log("correct");
+	function checkButtons(){
+		//if option chosen is correct, increment counter: wins
+		//console.log(correctAnswer);
+		if(correctAnswer.checked){
+			//userChoice == correctAnswer.val();
+			console.log(correctAnswer.val());
+			console.log("correct!");
 			wins++;
-			$("#wins").html("Correct: "+wins);
-			nextQ();
-			q++;
-			return true;
+			console.log(wins);
 		}else{
-			console.log("incorrect");
-			losses++;
-			$("#losses").html("Inorrect: "+losses);
-			q++;
-			return false;
-			//add fun facts
+			console.log("notworking");
 		}
-		$(".answers").remove();
-		nextQ();
 	}
 
-});
+	//this function calls the next question/slide
+	// function nextQ() {
+	// 	//start timer
+ // 		// stopwatch.start;
+ // 		// $('#timer').text('00:05');
+ 		
+
+ // 		//add question on page
+ // 		for(j = 0; j < trivia.length; j++){
+ // 			var newQForm = ("<form id='q" + j+ "'>");
+ // 			$("#question-holder").after(newQForm);
+ // 			//dynamically change the question
+	//  		$("#q"+j).prepend(trivia[q].question + "<br>");
+	 		
+	//  		console.log(trivia[q].question);
+
+	//  		//add multiple span for each options
+	// 		for(i = 0; i < trivia[q].options.length; i++){
+	// 			var newCSpan = ("<span id='c" + j+i + "'>");
+				
+	// 			//create a new input/radio button for each option
+	// 			$("#q"+j).append(newCSpan);
+
+	// 			if(trivia[q].options[i] != trivia[q].answer){
+	// 				$("#c"+j+i).append("<input type='radio' name='options'" + "value='"+ i + "'>" + trivia[q].options[i] + "<br>");	
+	// 			} else{
+	// 				$("#c"+j+i).append("<input type='radio' name='options' id='correctAnswer'" + " value='"+ i + "'>" + trivia[q].options[i] + "<br>");	
+	// 				correctAnswer = $("correctC"+j+i);
+	// 			}
+
+
+	// 		$("#submitBtn").on("click", function(){
+	// 		//if option chosen is correct, increment counter: wins
+	// 		console.log(correctAnswer);
+	// 		if(correctAnswer.checked){ //see prop method
+	// 			wins++;
+	// 			console.log("i won: " + wins);
+	// 			q++;
+	// 			return true;
+	// 		//if option chosen is incorrect, increment counter: losses
+	// 		}else{
+	// 			losses++;
+	// 			console.log("i lost: "+ losses);
+	// 			q++;
+	// 			return false;
+	// 		}
+	// 		});
+	// 	}
+
+	// 	// //some function to check user input click event
+	// 	// $("#submitBtn").on("click", function(){
+	// 	// 	//if option chosen is correct, increment counter: wins
+	// 	// 	console.log(correctAnswer);
+	// 	// 	if(correctAnswer.checked){ //see prop method
+	// 	// 		wins++;
+	// 	// 		console.log("i won: " + wins);
+	// 	// 		q++;
+	// 	// 		return true;
+	// 	// 	//if option chosen is incorrect, increment counter: losses
+	// 	// 	}else{
+	// 	// 		losses++;
+	// 	// 		console.log("i lost: "+ losses);
+	// 	// 		q++;
+	// 	// 		return false;
+	// 	// 	}
+	// 	// });	
+
+	// 	//run checkAnswer method to check if option chosen is correct
+	// 	//checkAnswer();
+	// 	}
+	// }
+
+	// //check if user choice is correct
+	// function checkAnswer(){	
+	// 	console.log(correctAnswer);
+
+	// 	//if option chosen is correct, increment counter: wins
+	// 	if(correctAnswer.checked){ //see prop method
+	// 		wins++;
+	// 		console.log("i won: " + wins);
+	// 		q++;
+
+	// 	//if option chosen is incorrect, increment counter: losses
+	// 	}else{
+	// 		losses++;
+	// 		console.log("i lost: "+ losses);
+	// 		q++;
+	// 	}
+	//  }
+
+//});
 
 
 
