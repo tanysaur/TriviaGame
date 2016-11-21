@@ -1,19 +1,17 @@
 // You'll create a trivia form with multiple choice or true/false options (your choice).
-
 // The player will have a limited amount of time to finish the quiz.
-
 // The game ends when the time runs out. The page will reveal the number of questions that players answer correctly and incorrectly.
 // Don't let the player pick more than one answer per question.
-
 // Don't forget to include a countdown timer.
-//$(document).ready(function() {
 
-//Variable declaration
-	var wins = 0;
-	var losses = 0;
-	var q = 0;
-	var correctAnswer;
 
+$(document).ready(function() {
+
+	//Variable declaration
+	var wins = 0;	//tallies the correct answers
+	var q = 0;		//index for question property
+	
+	//library of question and answers for the trivia game
 	var trivia = [
 		{
 			question: "Which actor played the 11th doctor?",
@@ -29,8 +27,8 @@
 
 		{
 			question : "Who is fighting in the time war?",
-			answer : "Dalek & the Timelords",
-			options : ["The Master & the Timelords","The Master & the Timelords","Dalek & the Timelords","Cybermen & the Timelords"],
+			answer : "Daleks & the Timelords",
+			options : ["The Master & the Doctor","The Master & the Timelords","Daleks & the Timelords","Cybermen & the Timelords"],
 		},
 
 		{
@@ -77,194 +75,107 @@
 
 	];
 
+	//functions that sets timer to 45 seconds, starts countdown and stops the timer
+	//reference: stopwatch activity from class
 	var stopwatch = {
-	    time: 30,
+	    time: 45,
 	    start: function(){
 	        counter = setInterval(stopwatch.count, 1000);
 	    },
 	    stop: function(){
 	        clearInterval(counter);
-	        $("#timer").text("00:00");
 	    },
 	    count: function(){
-	        stopwatch.time--;
-	        var converted = stopwatch.timeConverter(stopwatch.time);
-	        $('#timer').text(converted);
-	    },
-	    timeConverter: function(t){
-	        var minutes = Math.floor(t/60);
-	        var seconds = t - (minutes * 60);
-	        if (seconds != 00){
-	        	if (seconds < 10){
-	            	seconds = "0" + seconds;
-	        	}
-	        	if (minutes === 0){
-		        	minutes = "00";
-		        } else if (minutes < 10){
-		            minutes = "0" + minutes;
-		        }
-		        return minutes + ":" + seconds;
-
-	        }else{
-	        	losses++;
-	        	stopwatch.stop;
-	        	alert("timesup");
-	        	$("#timer").text("00:00");
-	        	//show stats
-	        }  
-	        
+	        var countdown = stopwatch.time--;
+	        $('#timer').text("Time left: " + countdown);
+	        if(countdown == 0){
+	        	//$(alert("time is up!");
+	        	//stopwatch.stop;
+	        	//clearInterval(counter);
+	        	showFinalScore();
+	        }
 	    }
 	};
 
-
-	window.onload = function(){
-	    
-    $("#startButton").on("click", stopwatch.start);
-	    //game.nextQ;
-	    // $("#QA-holder").addClass("displayHide");
-	    // $("#status-holder").addClass("displayHide");
-	    
+	//event that starts the timer when 'start' button is clicked	
+	window.onload = function(){   
+		
+    	$("#startButton").on("click", stopwatch.start);  
 	};
 
+	//as soon as start button is clicked, the button hides, and QA-holder + submit button appears
 	$('#startButton').click(function(){
-	  $(this).hide();
+		$(this).hide();
+		$("#QA-holder").removeClass("displayHide");
+		$("#submitButton").removeClass("displayHide");
 	});
 
-
-	//nextQ();
+	//as soon as submit Button is clicked, timer stops and final tally is displayed by calling the showFinalScore function
+	$("#submitButton").on("click", function(){
+		showFinalScore();
+	});
 	
-	//add question on page
+	//adds each question on the page
 	$.each(trivia, function(i, val) {
-		var qForm = ("<form id='question" + i + "'>" + val.question + "<br>");
+		//create a form and append the question from triva object to the form
+		var qForm = ("<form id='question" + i + "'>" + "<h2>"+ val.question +"</h2>"+ "<br>");
  		$("#question-holder").append(qForm);
+ 		q++; //increment to go to the next question
 
-
- 		$.each(trivia[i].options, function(j, val2){
- 			//add an radio input to each option
- 			if(val.answer != val2 ){
- 				var inputOptions = ("<input type='radio' value='incorrect' id='c"+i+j+"'>"+ val2 + "<br>");
+ 		//for each question add the choices / options (x4) to each question 
+ 		$.each(trivia[i].options, function(j, choices){
+ 			//create radio buttons per option
+ 			//add id 'incorrect' of the radio input that has all the 'incorrect' answers
+ 			if(val.answer != choices ){
+ 				var inputOptions = ("<input type='radio' value='wrong'" + "name='q" + i +  "' id='c"+i+j+"'>"+ choices + "<br>");
  				$("#question"+i).append(inputOptions);
  			}
- 			//add id correct of the radio input that has the correct answer
+ 			//add id 'correct' of the radio input that has the correct answer
  			else{
- 				var inputCorrectAnswer = ("<input type='radio' value='correct' id='correctOption'>"+ val2 + "<br>");
+ 				var inputCorrectAnswer = ("<input type='radio' value='correct'" + "name='q" + i +  "' id='c"+i+j+"'>"+ choices + "<br>");
  				$("#question"+i).append(inputCorrectAnswer);
- 				correctAnswer = $("#correctOption").val();
  			}
  		});
  	 	
 	});
-	
-	console.log(correctAnswer);
-	$("#submitBtn").on("click", checkButtons);
 
-	function checkButtons(){
-		//if option chosen is correct, increment counter: wins
-		//console.log(correctAnswer);
-		if(correctAnswer.checked){
-			//userChoice == correctAnswer.val();
-			console.log(correctAnswer.val());
-			console.log("correct!");
-			wins++;
-			console.log(wins);
-		}else{
-			console.log("notworking");
-		}
-	}
+//takes the value of each radio button
+function getCheckedValue( radioName ){
+	var radios = document.getElementsByName( radioName ); 
+	for(var y=0; y<radios.length; y++)
+		if(radios[y].checked) return radios[y].value; 
+}
 
-	//this function calls the next question/slide
-	// function nextQ() {
-	// 	//start timer
- // 		// stopwatch.start;
- // 		// $('#timer').text('00:05');
- 		
+//compares the radio button value and compares it with the string 'correct' that stores the correct answer of the given question
+function getScore(){
+	var wins = 0;
+		for (var i=0; i<trivia.length; i++)
+			if(getCheckedValue("q"+i)==="correct") wins += 1; 
+			return wins;
+}
 
- // 		//add question on page
- // 		for(j = 0; j < trivia.length; j++){
- // 			var newQForm = ("<form id='q" + j+ "'>");
- // 			$("#question-holder").after(newQForm);
- // 			//dynamically change the question
-	//  		$("#q"+j).prepend(trivia[q].question + "<br>");
-	 		
-	//  		console.log(trivia[q].question);
+//shows the final score by stopping the countdown timer, displaying 'status-holder' container,
+//and showing the final tally of correct vs incorrect answers
+function showFinalScore(){
+	//stopwatch.stop;
+	clearInterval(counter);
+	$("#QA-holder").addClass("displayHide");
+	$("#submitButton").addClass("displayHide");
+	$("#status-holder").removeClass("displayHide");
 
-	//  		//add multiple span for each options
-	// 		for(i = 0; i < trivia[q].options.length; i++){
-	// 			var newCSpan = ("<span id='c" + j+i + "'>");
-				
-	// 			//create a new input/radio button for each option
-	// 			$("#q"+j).append(newCSpan);
+	//updates html for the final scores
+	$("#wins").text("Correct: " + getScore());
+	$("#losses").text("Incorrect: " + (trivia.length-getScore()));	  	
+}
 
-	// 			if(trivia[q].options[i] != trivia[q].answer){
-	// 				$("#c"+j+i).append("<input type='radio' name='options'" + "value='"+ i + "'>" + trivia[q].options[i] + "<br>");	
-	// 			} else{
-	// 				$("#c"+j+i).append("<input type='radio' name='options' id='correctAnswer'" + " value='"+ i + "'>" + trivia[q].options[i] + "<br>");	
-	// 				correctAnswer = $("correctC"+j+i);
-	// 			}
+});
 
-
-	// 		$("#submitBtn").on("click", function(){
-	// 		//if option chosen is correct, increment counter: wins
-	// 		console.log(correctAnswer);
-	// 		if(correctAnswer.checked){ //see prop method
-	// 			wins++;
-	// 			console.log("i won: " + wins);
-	// 			q++;
-	// 			return true;
-	// 		//if option chosen is incorrect, increment counter: losses
-	// 		}else{
-	// 			losses++;
-	// 			console.log("i lost: "+ losses);
-	// 			q++;
-	// 			return false;
-	// 		}
-	// 		});
-	// 	}
-
-	// 	// //some function to check user input click event
-	// 	// $("#submitBtn").on("click", function(){
-	// 	// 	//if option chosen is correct, increment counter: wins
-	// 	// 	console.log(correctAnswer);
-	// 	// 	if(correctAnswer.checked){ //see prop method
-	// 	// 		wins++;
-	// 	// 		console.log("i won: " + wins);
-	// 	// 		q++;
-	// 	// 		return true;
-	// 	// 	//if option chosen is incorrect, increment counter: losses
-	// 	// 	}else{
-	// 	// 		losses++;
-	// 	// 		console.log("i lost: "+ losses);
-	// 	// 		q++;
-	// 	// 		return false;
-	// 	// 	}
-	// 	// });	
-
-	// 	//run checkAnswer method to check if option chosen is correct
-	// 	//checkAnswer();
-	// 	}
-	// }
-
-	// //check if user choice is correct
-	// function checkAnswer(){	
-	// 	console.log(correctAnswer);
-
-	// 	//if option chosen is correct, increment counter: wins
-	// 	if(correctAnswer.checked){ //see prop method
-	// 		wins++;
-	// 		console.log("i won: " + wins);
-	// 		q++;
-
-	// 	//if option chosen is incorrect, increment counter: losses
-	// 	}else{
-	// 		losses++;
-	// 		console.log("i lost: "+ losses);
-	// 		q++;
-	// 	}
-	//  }
-
-//});
-
-
+// References:
+// stopwatch object: stopwatch_solution activity from class
+// https://github.com/the-Coding-Boot-Camp-at-UT/10-16-Houston-Class-Content/tree/master/hou1010-MW-Class-Content/05-timers-trivia/1-Class-Content/5.2/Activities/7-Stopwatch
+// 
+// getCheckedValue, getScore, showFinalScore:
+// http://stackoverflow.com/questions/28403558/multiple-choice-quiz-getting-score
 
 
 

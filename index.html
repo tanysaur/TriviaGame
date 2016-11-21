@@ -1,50 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Home | Trivia Game</title>
+	<title>Doctor Who | Quiz</title>
 	<!-- <link rel="icon" href="assets/images/ysa_logo_favicon.ico" type="image/x-icon"> -->
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- personal CSS style -->
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	
 </head>
 <body>
+
+<!-- 	doctor who theme song playing in loop for 43s -->
+	<audio autoplay loop id="theme-music" src="assets/audio/doctor-who.mp3" volume="0.05"></audio>
 	
-	<div class="container">
+<!-- 	jumbotron container -->
+	<div class="container-fluid">
 		<div class="jumbotron">
-			<h1 class="text-center">Doctor Who Trivia</h1>
+			<h1 class="text-center">- Geronimo! - <br>A Doctor Who Trivia</h1>
+			<div class="text-center" id="timer">00:45</div>
 		</div>
 	</div>
-
-	<div class="container text-center" id="conatinerStart">
-		<button id="startButton"><h1>Start</h1></button>
-	</div>
-
-	<div class="container status-holder">
-		<div id="wins"><h4>Correct: </h4></div>
-		<div id="losses"><h4>Incorrect: </h4></div>
-	</div>
-
-	<div class="container" id="QA-holder">
-		<div class="text-center" id="timer">00:00</div>
 	
+<!-- 	start button container -->
+	<div class="container text-center">
+		<div class="row">
+			<div class="col-lg-12">
+				<button id="startButton"><h1>Start</h1></button>
+			</div>
+		</div>
+	</div>
+	
+<!-- 	question & answer display holder -->
+	<div class="container displayHide" id="QA-holder">
 		<!-- container for question -->
 		<div id="question-holder"></div>
+		<br>
+	</div>
+	
+<!-- 	submit button -->
+	<div class="container text-center">
+		<div class="row">
+			<div class="col-lg-12">
+				<button class="displayHide" id="submitButton" onclick="showFinalScore()"><h3>View Results</h3></button>
+			</div>
+		</div>
+	</div>
+	<br>
+<!-- 	status holder -->
+	<div class="container displayHide" id="status-holder">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>If only the Doctor was here to give you more time... Here's how you did:</h1>
+				<div class="text-center" id="wins"><h1>Correct: </h1></div>
+				<div class="text-center" id="losses"><h1>Incorrect: </h1></div>
+				<br>
+				<h1>Random quote:</h1>
+				<h2>“The universe is big. It’s vast and complicated and ridiculous. And sometimes, very rarely, impossible things just happen and we call them miracles.” — The Doctor, Season 5, Episode 12</h2>
+				
+			</div>
+		</div>
 		
-		<!-- q0 - q9 -->
-			<!-- c00 - c93 -->
-		<!-- container for multiple choices -->
-
-		<input type="button" id="submitBtn" value="Submit">
 	</div>
 
 	<br>
 	<br>
 	
-
 	<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous">
 	</script>
     <script type="text/javascript" src="assets/javascript/app.js"></script>
 </body>
 </html>
+
+<!-- 
+References:
+audio:
+https://dl.dropboxusercontent.com/u/30516292/Doctor%20Who%202013%20Theme%20Tune.mp3?dl -->

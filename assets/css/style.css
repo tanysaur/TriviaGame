@@ -1,23 +1,36 @@
+body {
+	background: url("../images/doctor-who.jpg");
+	//opacity: 0.5;
+}
+
+@font-face {
+    font-family: 'Doctor-Who', "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    src: url("../fonts/Doctor-Who.ttf");
+}
+
+
+.jumbotron {
+	background: url("../images/gallifreyan.jpg");
+	color: #FFA200;
+	font-family: 'Doctor-Who'; 
+}
+
+#timer {
+	font-size: 40px;
+}
 button:hover {
-	background-color: lightgrey;
+	background-color: #FFA200;
 }
 
-.row {
-	border: 1px solid blue;
+#QA-holder, #status-holder {
+	background-color: #6cbfb2;
 }
-
-
-
-#answers button {
-	
-	line-height: 40px;
-}
-
-#answers h3:hover{
-	background-color: lightblue;
-}
-
 
 .displayHide{
 	display: none;
+}
+
+form, button, #status-holder {
+	font-size: 30px;
+	font-family: 'Doctor-Who';
 }
