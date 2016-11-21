@@ -99,8 +99,8 @@ $(document).ready(function() {
 
 	//event that starts the timer when 'start' button is clicked	
 	window.onload = function(){   
-		
     	$("#startButton").on("click", stopwatch.start);  
+    	gameStart();
 	};
 
 	//as soon as start button is clicked, the button hides, and QA-holder + submit button appears
@@ -118,7 +118,7 @@ $(document).ready(function() {
 	//adds each question on the page
 	$.each(trivia, function(i, val) {
 		//create a form and append the question from triva object to the form
-		var qForm = ("<form id='question" + i + "'>" + "<h2>"+ val.question +"</h2>"+ "<br>");
+		var qForm = ("<form id='question" + i + "'>" + "<h1>"+ val.question +"</h1>"+ "<br>");
  		$("#question-holder").append(qForm);
  		q++; //increment to go to the next question
 
@@ -139,34 +139,40 @@ $(document).ready(function() {
  	 	
 	});
 
-//takes the value of each radio button
-function getCheckedValue( radioName ){
-	var radios = document.getElementsByName( radioName ); 
-	for(var y=0; y<radios.length; y++)
-		if(radios[y].checked) return radios[y].value; 
-}
+	//takes the value of each radio button
+	function getCheckedValue( radioName ){
+		var radios = document.getElementsByName( radioName ); 
+		for(var y=0; y<radios.length; y++)
+			if(radios[y].checked) return radios[y].value; 
+	}
 
-//compares the radio button value and compares it with the string 'correct' that stores the correct answer of the given question
-function getScore(){
-	var wins = 0;
-		for (var i=0; i<trivia.length; i++)
-			if(getCheckedValue("q"+i)==="correct") wins += 1; 
-			return wins;
-}
+	//compares the radio button value and compares it with the string 'correct' that stores the correct answer of the given question
+	function getScore(){
+		var wins = 0;
+			for (var i=0; i<trivia.length; i++)
+				if(getCheckedValue("q"+i)==="correct") wins += 1; 
+				return wins;
+	}
 
-//shows the final score by stopping the countdown timer, displaying 'status-holder' container,
-//and showing the final tally of correct vs incorrect answers
-function showFinalScore(){
-	//stopwatch.stop;
-	clearInterval(counter);
-	$("#QA-holder").addClass("displayHide");
-	$("#submitButton").addClass("displayHide");
-	$("#status-holder").removeClass("displayHide");
+	//shows the final score by stopping the countdown timer, displaying 'status-holder' container,
+	//and showing the final tally of correct vs incorrect answers
+	function showFinalScore(){
+		//stopwatch.stop;
+		clearInterval(counter);
+		$("#QA-holder").addClass("displayHide");
+		$("#submitButton").addClass("displayHide");
+		$("#status-holder").removeClass("displayHide");
+		$("#playAgain").removeClass("displayHide");
 
-	//updates html for the final scores
-	$("#wins").text("Correct: " + getScore());
-	$("#losses").text("Incorrect: " + (trivia.length-getScore()));	  	
-}
+		//updates html for the final scores
+		$("#wins").text("Correct: " + getScore());
+		$("#losses").text("Incorrect: " + (trivia.length-getScore()));	  	
+	}
+
+	//function that reloads the page so player can play again
+	$('#playAgain').click(function(){
+		location.reload();
+	});
 
 });
 
